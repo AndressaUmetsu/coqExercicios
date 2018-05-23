@@ -5,49 +5,72 @@ Require Import aula3 aula4 aula5 aula6 aula7.
     what these functions should do. *)
 
 (** **** Exercise: 2 star  *)
-Fixpoint nonzeros (l:natlist) : natlist =>
+Fixpoint nonzeros (l : natlist) : natlist :=
 match l with
+| []     => nil
 | h :: t => match h with
-            | 0   => nil 
-            | S n => h :: (nonzeros t)
-            end. 
+            | 0   => nonzeros t 
+            | S n => h :: nonzeros t
+            end
 end.
+
+Example my_test_nonzeros:
+  nonzeros [] = [].
+  Proof. simpl. reflexivity. Qed.
+
+Example my_test_nonzeros_2:
+  nonzeros [1;0] = [1].
+  Proof. simpl. reflexivity. Qed.
 
 (** **** Exercise: 1 star  *)
 Example test_nonzeros:
   nonzeros [0;1;0;2;3;0;0] = [1;2;3].
-  (* FILL IN HERE *) Admitted.
+  Proof. 
+    simpl.
+    reflexivity.
+  Qed.
+
 (* GRADE_THEOREM 0.5: NatList.test_nonzeros *)
 
 (** **** Exercise: 2 star  *)
-Fixpoint oddmembers (l:natlist) : natlist
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
-
+Fixpoint oddmembers (l:natlist) : natlist :=
+match l with
+| []     => nil
+| h :: t => match oddb h with
+           | false => oddmembers t 
+           | true  => h :: oddmembers t 
+           end
+end.
+(* oddb h = false => oddmenbers t *)
+(* oddb h = true  => h :: oddmenbers t *)
+            
 (** **** Exercise: 1 star  *)
 Example test_oddmembers:
   oddmembers [0;1;0;2;3;0;0] = [1;3].
-  (* FILL IN HERE *) Admitted.
+  Proof. simpl. reflexivity. Qed.
 (* GRADE_THEOREM 0.5: NatList.test_oddmembers *)
 
 (** **** Exercise: 2 star  *)
-Definition countoddmembers (l:natlist) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition countoddmembers (l:natlist) : nat :=
+match l with
+| [] => 0
+| l  => length (oddmembers l) 
+end.
 
 (** **** Exercise: 1 star  *)
 Example test_countoddmembers1:
   countoddmembers [1;0;3;1;4;5] = 4.
-  (* FILL IN HERE *) Admitted.
+  Proof. simpl. reflexivity. Qed.
 
 (** **** Exercise: 1 star  *)
 Example test_countoddmembers2:
   countoddmembers [0;2;4] = 0.
-  (* FILL IN HERE *) Admitted.
+  Proof. reflexivity. Qed.
 
 (** **** Exercise: 1 star  *)
 Example test_countoddmembers3:
   countoddmembers nil = 0.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  Proof. reflexivity. Qed.
 
 (** **** Exercise: 3 stars, advanced (alternate)  *)
 (** Complete the definition of [alternate], which "zips up" two lists
